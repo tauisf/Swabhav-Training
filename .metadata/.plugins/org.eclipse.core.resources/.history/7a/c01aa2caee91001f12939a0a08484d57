@@ -1,0 +1,25 @@
+package com.aurionpro.decorator.model;
+
+public class CarService {
+	 
+   
+	public  double startService() {
+
+		ICarService carService = new CarInspectionService();
+		return carService.getCost();
+		
+	}
+	
+	public double getOilChange(ICarService carService) {
+		
+		ICarService oilService = new OilChange(carService);
+		return  oilService.getCost();
+	}
+	public double getWheelALign(ICarService carService) {
+			
+			ICarService wheelService = new WheelAlignment();
+			return    wheelService.getCost();
+		}
+	
+	
+}

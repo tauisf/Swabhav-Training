@@ -1,0 +1,5 @@
+package com.aurionrpro.factory.model;
+
+public interface ICar {
+
+}

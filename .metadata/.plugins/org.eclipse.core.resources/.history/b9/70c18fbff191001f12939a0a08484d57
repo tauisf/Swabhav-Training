@@ -1,0 +1,14 @@
+package com.aurionpro.decorator.test;
+
+import com.aurionpro.decorator.model.CarService;
+
+public class CarApp {
+		public static void main(String[] args) {
+			
+			CarService service = new CarService();
+			
+			System.out.println(service.startService());
+			
+		}
+
+}

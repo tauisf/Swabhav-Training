@@ -1,0 +1,6 @@
+package com.aurionpro.abstractafactory.model;
+
+public  interface ICarFactory {
+    
+	public static  ICar makeCar();
+}

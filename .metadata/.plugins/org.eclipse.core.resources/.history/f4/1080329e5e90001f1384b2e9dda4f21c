@@ -1,0 +1,5 @@
+package com.aurionpro.id.solution.model;
+
+public class DbLogger {
+
+}

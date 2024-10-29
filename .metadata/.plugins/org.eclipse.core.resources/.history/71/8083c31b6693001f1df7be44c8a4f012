@@ -1,0 +1,83 @@
+package com.aurionpro.model;
+
+import java.util.List;
+
+public class GuitarStoreFacade {
+	 private Inventory inventory;
+
+	    public GuitarStoreFacade() {
+	        inventory = new Inventory();
+	        initializeInventory();
+	    }
+
+	  
+	    private void initializeInventory() {
+//	    	 inventory.addGuitar("12345", 1500.00,
+//	    	            new GuitarSpec(Builder.MARTIN, "D-28", Type.ACOUSTIC, Wood.INDIAN_ROSEWOOD, Wood.SITKA));
+//	    	    inventory.addGuitar("54321", 1200.00,
+//	    	            new GuitarSpec(Builder.GIBSON, "J-45", Type.ACOUSTIC, Wood.MAHOGANY, Wood.ADIRONDACK));
+//	    	    inventory.addGuitar("67890", 1600.00,
+//	    	            new GuitarSpec(Builder.FENDER, "Stratocaster", Type.ELECTRIC, Wood.ALDER, Wood.ALDER));
+//	    	    inventory.addGuitar("13579", 1800.00,
+//	    	            new GuitarSpec(Builder.PRS, "Custom 24", Type.ELECTRIC, Wood.MAHOGANY, Wood.MAPLE));
+//	    	    inventory.addGuitar("24680", 1400.00,
+//	    	            new GuitarSpec(Builder.OLSON, "SJ", Type.ACOUSTIC, Wood.COCOBOLO, Wood.CEDAR));
+	    	 inventory.addGuitar("12345", 1500.00,
+	                 new GuitarSpecBuilder()
+	                     .setBuilder(Builder.MARTIN)
+	                     .setModel("D-28")
+	                     .setType(Type.ACOUSTIC)
+	                     .setBackWood(Wood.INDIAN_ROSEWOOD)
+	                     .setTopWood(Wood.SITKA)
+	                     .build());
+	         
+	         inventory.addGuitar("54321", 1200.00,
+	                 new GuitarSpecBuilder()
+	                     .setBuilder(Builder.GIBSON)
+	                     .setModel("J-45")
+	                     .setType(Type.ACOUSTIC)
+	                     .setBackWood(Wood.MAHOGANY)
+	                     .setTopWood(Wood.ADIRONDACK)
+	                     .build());
+
+	         inventory.addGuitar("67890", 1600.00,
+	                 new GuitarSpecBuilder()
+	                     .setBuilder(Builder.FENDER)
+	                     .setModel("Stratocaster")
+	                     .setType(Type.ELECTRIC)
+	                     .setBackWood(Wood.ALDER)
+	                     .setTopWood(Wood.ALDER)
+	                     .build());
+	         
+	         inventory.addGuitar("13579", 1800.00,
+	                 new GuitarSpecBuilder()
+	                     .setBuilder(Builder.PRS)
+	                     .setModel("Custom 24")
+	                     .setType(Type.ELECTRIC)
+	                     .setBackWood(Wood.MAHOGANY)
+	                     .setTopWood(Wood.MAPLE)
+	                     .build());
+
+	         inventory.addGuitar("24680", 1400.00,
+	                 new GuitarSpecBuilder()
+	                     .setBuilder(Builder.OLSON)
+	                     .setModel("SJ")
+	                     .setType(Type.ACOUSTIC)
+	                     .setBackWood(Wood.COCOBOLO)
+	                     .setTopWood(Wood.CEDAR)
+	                     .build());
+	    }
+	    
+
+	   
+	    public List<Guitar> findGuitars(Builder builder, String model, Type type, Wood backWood, Wood topWood) {
+	        GuitarSpec searchSpec = new GuitarSpec(builder, model, type, backWood, topWood);
+	        return inventory.search(searchSpec);
+	    }
+
+	  
+	    public Guitar getGuitarBySerialNumber(String serialNumber) {
+	        return inventory.getGuitar(serialNumber);
+	    }
+	}
+

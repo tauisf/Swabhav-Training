@@ -1,0 +1,5 @@
+package com.aurionpro.id.violation.model;
+
+public class DBlogger {
+
+}

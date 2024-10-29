@@ -1,0 +1,14 @@
+package com.aurionpro.facade.hotel.test;
+
+import com.aurionpro.facade.hotel.model.IHotel;
+import com.aurionpro.facade.hotel.model.IMenu;
+import com.aurionpro.facade.hotel.model.IndianHotel;
+
+public class HotelTest {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}

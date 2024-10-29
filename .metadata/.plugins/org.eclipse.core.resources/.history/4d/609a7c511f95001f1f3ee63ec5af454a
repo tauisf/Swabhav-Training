@@ -1,0 +1,29 @@
+package com.aurionpro.tdd;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+public class AreaCalculatorTest {
+
+	
+	private AreaCalculator calculator;
+	
+	@BeforeEach
+	void init() {
+		calculator = new AreaCalculator();
+	}
+	@Test
+	void CalculateAreaOfCircleTest() {
+		assertEquals(314,calculator.CalculateAreaOfCircle(10));
+	}
+	@Test
+	void CalculateAreaOfSquareTest() {
+		assertEquals(100,calculator.CalculateAreaOfSquare(10));
+	}
+	@Test
+	void CalculateAreaOFRectangleTest() {
+		assertEquals(200,calculator.CalculateAreaOfRectangle(10,20));
+	}
+}

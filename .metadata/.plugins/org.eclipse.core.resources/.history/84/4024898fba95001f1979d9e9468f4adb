@@ -1,0 +1,46 @@
+package com.aurionpro.tdd;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class TicTacToeTest {
+	
+	
+
+	@Test
+	void testDrawBoard() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testPlayerHasWon() {
+		 char[][] board = {
+		            {'x', 'x', 'x'},
+		            {'-', 'o', '-'},
+		            {'o', '-', '-'}
+		        };
+		 assertEquals('x', TicTacToe.playerHasWon(board), "Player 1 should win with a row of 'x's.");
+	}
+
+	@Test
+	void testBoardIsFullTrue() {
+		char[][] board = {
+	            {'x', 'o', 'x'},
+	            {'x', 'o', 'o'},
+	            {'o', 'x', 'x'}
+	        };
+	        assertTrue(TicTacToe.boardIsFull(board), "The board should be full.");
+	        
+	}
+
+	 @Test
+	    void testBoardIsFullFalse() {
+	        char[][] board = {
+	            {'x', 'o', '-'},
+	            {'x', '-', 'o'},
+	            {'o', 'x', 'x'}
+	        };
+	        assertFalse(TicTacToe.boardIsFull(board), "The board should not be full.");
+	    }
+}

@@ -1,0 +1,5 @@
+package com.aurionpro.observer.model;
+
+public class SMSNotifier {
+
+}

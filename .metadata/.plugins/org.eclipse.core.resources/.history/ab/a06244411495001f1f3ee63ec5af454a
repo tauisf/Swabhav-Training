@@ -1,0 +1,19 @@
+package com.aurionpro.tdd;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class ArthimeticOperationTest {
+
+	@Test
+	void testAddition() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSubtraction() {
+		fail("Not yet implemented");
+	}
+
+}

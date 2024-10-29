@@ -1,0 +1,7 @@
+package com.aurionpro.id.solution.model;
+
+public interface ILogger {
+
+	
+	 public String log(String msg);
+}

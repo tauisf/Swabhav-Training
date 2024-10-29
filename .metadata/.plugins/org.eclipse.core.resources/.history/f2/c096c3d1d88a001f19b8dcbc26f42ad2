@@ -1,0 +1,17 @@
+package com.aurionpro.refelction;
+
+public class ReflectionTest {
+
+	public static void main(String[] args) {
+		try {
+			Class stringClass = Class.forName("java.lang.String");
+			System.out.println(stringClass.getName());
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}

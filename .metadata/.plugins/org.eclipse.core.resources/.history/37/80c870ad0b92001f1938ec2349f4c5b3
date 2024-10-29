@@ -1,0 +1,9 @@
+package com.aurionpro.decorator.hat.model;
+
+public class HatService {
+	
+	public void createStandradHat() {
+		IHat standaradHat =  new StandradHat();
+	}
+
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;TicTacToe.java&apos; to &apos;20-unittesting-app/src/main/java/com.aurionpro.tdd&apos;&#x0D;&#x0A;- Original project: &apos;08-tic-tac-toe-app&apos;&#x0D;&#x0A;- Destination element: &apos;20-unittesting-app/src/main/java/com.aurionpro.tdd&apos;&#x0D;&#x0A;- Original element: &apos;com.aurionpro.test.TicTacToe.java&apos;" description="Copy compilation unit" destination="=20-unittesting-app/src\/main\/java&lt;com.aurionpro.tdd" element1="/src&lt;com.aurionpro.test{TicTacToe.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1730180956076" units="1" version="1.0"/>
+</session>

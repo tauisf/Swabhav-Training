@@ -1,0 +1,60 @@
+package rules_app;
+
+import java.util.Scanner;
+
+public class MultiplicationOfArray {
+
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the size of rows for the  array: ");
+		int rows = scanner.nextInt();
+		
+		System.out.println("Enter the size of columns for the array: ");
+		int cols = scanner.nextInt();
+		
+		
+		
+		int[][] matrix = new int[rows][cols];
+		enterMaxtrix(matrix, rows, cols, scanner);
+		
+
+	
+
+	}
+	
+	public static void enterMaxtrix(int[][] matrix , int rows ,int cols,Scanner scanner) {
+		
+		for(int rowIndex  = 0; rowIndex < rows ;rowIndex++) {
+			enterElement(matrix,rows,cols,rowIndex,scanner);
+		}
+	
+		printMatrix(matrix);
+	}
+	
+	public static void enterElement(int[][] matrix , int rows, int cols,int rowIndex,Scanner scanner) {
+		for(int coloumnIndex  = 0; coloumnIndex < cols ;coloumnIndex++) {
+			System.out.print("Enter the elemnent ["+rowIndex+"]"+"["+coloumnIndex+"] elements: ");
+			matrix[rowIndex][coloumnIndex] = scanner.nextInt();
+		}
+	
+	}
+	
+	
+	public static void printMatrix(int[][] matrix) {
+		 for (int[] row : matrix) { //accessing each row  
+			 printElement(row);
+	    }
+	}
+	
+	public static void printElement(int[] row) {
+		
+		for (int value : row) { // accessing each value in the  each row
+            System.out.print(value + " ");
+        }
+        System.out.println();
+        
+    }
+
+	
+
+}

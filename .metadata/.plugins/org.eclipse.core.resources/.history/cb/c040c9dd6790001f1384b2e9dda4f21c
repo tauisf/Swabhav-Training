@@ -1,0 +1,17 @@
+package com.aurionpro.model;
+
+public class DbConnection {	
+	private static DbConnection connection;
+	
+	private DbConnection(){ // cannot be accesss by driver directly
+		
+	}
+	
+	
+	private static DbConnection getConnection() {
+		if(connection ==  null )
+			connection = new DbConnection();
+		
+		return connection;
+	}
+}

@@ -1,0 +1,17 @@
+package com.aurionpro.tdd;
+
+public class Student {
+
+	private IStuedntService studentService;
+
+	public Student(IStuedntService studentService) {
+		super();
+		this.studentService = studentService;
+	}
+	
+	
+	public double getPercentage(IStuedntService studentService) {
+		
+		return studentService.getMarks()/studentService.GetSubjectNumber();
+	}
+}

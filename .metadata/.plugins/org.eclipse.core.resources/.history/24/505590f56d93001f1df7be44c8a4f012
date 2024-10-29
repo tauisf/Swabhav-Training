@@ -1,0 +1,24 @@
+package com.aurionpro.state.model;
+
+/**
+ * @author tausif.siddiqui
+ *
+ */
+public class VendingMachineContext {
+
+	private VendingMachineContext state;
+
+	public VendingMachineContext() {
+		super();
+		this.state = state;
+	}
+
+	public void setState(VendingMachineContext state) {
+		this.state = state;
+	}
+
+	
+	
+	
+	
+}

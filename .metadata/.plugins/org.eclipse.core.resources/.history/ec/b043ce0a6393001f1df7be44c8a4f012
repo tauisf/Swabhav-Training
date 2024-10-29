@@ -1,0 +1,46 @@
+package com.aurionpro.test;
+
+import java.util.List;
+
+import com.aurionpro.model.Builder;
+import com.aurionpro.model.Guitar;
+import com.aurionpro.model.GuitarSpec;
+import com.aurionpro.model.Inventory;
+import com.aurionpro.model.Type;
+import com.aurionpro.model.Wood;
+
+public class GuitarApp {
+
+	public static void main(String[] args) {
+		Inventory inventory = new Inventory();
+        initializeInventory(inventory);
+
+        GuitarSpec whatCustomerLikes = new GuitarSpec(
+                Builder.MARTIN, "D-28", Type.ACOUSTIC, Wood.INDIAN_ROSEWOOD, Wood.SITKA);
+
+        List<Guitar> matchingGuitars = inventory.search(whatCustomerLikes);
+        if (!matchingGuitars.isEmpty()) {
+            System.out.println("You might like these guitars:");
+            for (Guitar guitar : matchingGuitars) {
+                GuitarSpec spec = guitar.getSpec();
+                System.out.println("We have a " + spec.getBuilder() + " " + spec.getModel() +
+                        " " + spec.getType() + " guitar:\n   Back and sides: " +
+                        spec.getBackWood() + "\n   Top: " + spec.getTopWood() +
+                        "\nYou can have it for only $" + guitar.getPrice() + "!\n---");
+            }
+        } else {
+            System.out.println("Sorry, we have nothing matching your preferences.");
+        }
+    }
+
+    private static void initializeInventory(Inventory inventory) {
+        inventory.addGuitar("12345", 1500.00,
+                new GuitarSpec(Builder.MARTIN, "D-28", Type.ACOUSTIC, Wood.INDIAN_ROSEWOOD, Wood.SITKA));
+        inventory.addGuitar("54321", 1200.00,
+                new GuitarSpec(Builder.GIBSON, "J-45", Type.ACOUSTIC, Wood.MAHOGANY, Wood.ADIRONDACK));
+       
+    }
+
+	}
+
+}

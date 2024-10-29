@@ -1,0 +1,18 @@
+package com.aurionpro.account.model;
+
+public class SavingAccount implements IAccount{
+
+
+	@Override
+	public void credit(double amount) {
+		System.out.println("the account credit in saving "+ amount);
+		
+	}
+
+	@Override
+	public void debit(double amount) {
+		System.out.println("the account debit from  saving "+amount);
+		
+	}
+
+}

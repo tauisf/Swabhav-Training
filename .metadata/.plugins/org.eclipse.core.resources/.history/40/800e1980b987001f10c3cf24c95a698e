@@ -1,0 +1,40 @@
+package com.aurionpro.test;
+
+import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+public class ConsumerTest {
+
+	public static void main(String[] args) {
+		
+		Consumer<Integer> factorialConsumer =(number)->{
+			int fact =1 ;
+			
+			for(int i = 1; i<=number;i++) 
+				fact *= i;
+			
+			System.out.println(fact);
+		};
+		
+		
+		factorialConsumer.accept(5);
+		
+		BiConsumer<Integer,Integer> factorialBiConsumer =(number1,number2)->{
+			int sum =0;
+			sum = number1+number2;
+			
+			System.out.println(sum);
+			
+		};
+		factorialBiConsumer.accept(2, 3);
+		
+		
+		
+		Supplier randomNumberSupplier =()-> (new Random()).nextInt();
+	
+		System.out.println(randomNumberSupplier.get());
+	}
+	
+}

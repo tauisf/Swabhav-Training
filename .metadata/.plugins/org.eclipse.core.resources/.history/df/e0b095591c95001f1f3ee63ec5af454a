@@ -1,0 +1,14 @@
+package com.aurionpro.tdd;
+
+public class AreaCalculator {
+
+	double CalculateAreaOfCircle(double radius) {
+		return 3.14*(radius*radius);
+	}
+	int CalculateAreaOfRectangle(int length, int breadth ) {
+		return length*breadth;
+	}
+	double CalculateAreaOfSquare(int side) {
+		return side*side;
+	}
+}

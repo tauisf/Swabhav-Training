@@ -1,0 +1,24 @@
+package com.aurionpro.adapters.model;
+
+public class Biscuit {
+
+	private String name;
+	private double price;
+	
+	
+	public Biscuit(String name, double price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	
+}

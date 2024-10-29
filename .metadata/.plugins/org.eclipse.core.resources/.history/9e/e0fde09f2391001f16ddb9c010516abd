@@ -1,0 +1,19 @@
+package com.aurionpro.abstractafactory.test;
+
+import com.aurionrpro.factory.model.ICarFactory;
+import com.aurionpro.abstractafactory.model.MahindraFactory;
+import com.aurionrpro.factory.model.CarType;
+import com.aurionrpro.factory.model.ICar;
+
+public class CarTest {
+
+	public static void main(String[] args) {
+	
+	ICarFactory factory = new MahindraFactory();
+		
+		ICar car;
+		car = factory.makeCar()
+
+	}
+
+}

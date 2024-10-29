@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;min-contact-app&apos; to &apos;07-min-contact-app&apos;" description="Rename resource &apos;min-contact-app&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/min-contact-app" name="07-min-contact-app" stamp="1728649360464" updateReferences="true"/>
+</session>

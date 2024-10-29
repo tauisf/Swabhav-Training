@@ -1,0 +1,11 @@
+package com.aurionpro.account.model;
+
+public class CreateSavingAccount implements IAccountFactory {
+
+	@Override
+	public IAccount createAccount(int id , String name) {
+		IAccount account = new SavingAccount(id , name);
+		return account;
+	}
+
+}

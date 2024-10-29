@@ -1,0 +1,20 @@
+package com.aurionpro.account.model;
+
+public class SavingAccount implements IAccount{
+
+	private int savingId ;
+	private String name ;
+	
+	@Override
+	public void credit(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void debit(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

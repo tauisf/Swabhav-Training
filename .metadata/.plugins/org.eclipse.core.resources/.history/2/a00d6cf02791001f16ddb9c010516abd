@@ -1,0 +1,11 @@
+package com.aurionpro.account.test;
+
+import com.aurionpro.account.model.CreateSavingAccount;
+import com.aurionpro.account.model.IAccountFactory;
+
+public class AccountTest {
+	 public static void main(String[] args ) {
+		 
+		 IAccountFactory factory = new CreateSavingAccount();
+	 }
+}

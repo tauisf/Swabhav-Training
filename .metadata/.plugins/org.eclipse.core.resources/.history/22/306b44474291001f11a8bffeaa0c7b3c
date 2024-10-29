@@ -1,0 +1,17 @@
+package com.aurionpro.facade.model;
+
+public class AccountService {
+
+	
+	public void createSavingAccount(int id ,String name ,double balance) {
+        IAccountFactory factory = new CreateSavingAccount();
+		 IAccount  account = factory.createAccount(id,name,balance);
+		 System.out.println("Account created  successfull");
+	}
+	
+	public void createCurrentAccount(int id ,String name ,double balance) {
+        IAccountFactory factory = new CreateSavingAccount();
+		 IAccount  account = factory.createAccount(id,name,balance);
+		 System.out.println("Account created  successfull");
+	}
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.aurionpro.enums&apos; to &apos;com.aurionpro.enum_models&apos;&#x0D;&#x0A;- Original project: &apos;poc_enum_app&apos;&#x0D;&#x0A;- Original element: &apos;poc_enum_app/src/com.aurionpro.enums&apos;&#x0D;&#x0A;- Renamed element: &apos;poc_enum_app/src/com.aurionpro.enum_models&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;com.aurionpro.enums&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.aurionpro.enums" name="com.aurionpro.enum_models" qualified="false" references="true" stamp="1728054240926" textual="false" version="1.0"/>
+</session>

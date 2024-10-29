@@ -1,0 +1,5 @@
+package com.aurionpro.account.model;
+
+public class CurrentAccount {
+
+}
