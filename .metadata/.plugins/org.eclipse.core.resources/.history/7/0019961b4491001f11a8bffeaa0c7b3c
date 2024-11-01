@@ -1,7 +1,0 @@
-package com.aurionpro.facade.model;
-
-public interface IAccountFactory {
-
-	public IAccount createAccount(int id , String name,double balance);
-	
-}

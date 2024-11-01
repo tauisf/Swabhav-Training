@@ -1,9 +1,0 @@
-package com.aurionpro.decorator.test;
-
-public class CarService {
-		public static void main(String[] args) {
-			
-			
-		}
-
-}

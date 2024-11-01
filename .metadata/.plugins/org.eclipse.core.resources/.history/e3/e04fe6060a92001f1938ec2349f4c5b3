@@ -1,9 +1,0 @@
-package com.aurionpro.decorator.hat.model;
-
-public abstract class HatDecorator implements IHat {
-
-	@Override
-	public abstract double getPrice();
-	
-
-}

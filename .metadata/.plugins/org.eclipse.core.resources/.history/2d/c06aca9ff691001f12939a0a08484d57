@@ -1,6 +1,0 @@
-package com.aurionpro.adapters.model;
-
-public abstract class HatAdapter implements IItems {
-	public abstract String getName();
-	public abstract double getPrice();
-}

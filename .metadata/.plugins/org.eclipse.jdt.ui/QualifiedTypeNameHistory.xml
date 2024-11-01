@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.aurionrpro.factory.model.CarType"/>
-<fullyQualifiedTypeName name="com.aurionpro.abstractafactory.model.MahindraFactory"/>
-<fullyQualifiedTypeName name="com.aurionpro.abstractafactory.model.ICarFactory"/>
-<fullyQualifiedTypeName name="com.aurionpro.abstractafactory.model.ICar"/>
-<fullyQualifiedTypeName name="com.aurionpro.account.model.CreateSavingAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.account.model.IAccountFactory"/>
-<fullyQualifiedTypeName name="com.aurionpro.account.model.IAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.account.model.CreateCurrentAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.model.IAccountFactory"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.model.CreateSavingAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.model.IAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.model.CreateCurrentAccount"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.model.AccountService"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="java.util.Map"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.hotel.model.IndianHotel"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.hotel.model.IHotel"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.hotel.model.IMenu"/>
-<fullyQualifiedTypeName name="com.aurionpro.facade.hotel.model.HotelService"/>
 <fullyQualifiedTypeName name="com.aurionpro.model.ContactService"/>
 <fullyQualifiedTypeName name="com.aurionpro.decorator.model.CarService"/>
 <fullyQualifiedTypeName name="com.aurionpro.decorator.model.ICarService"/>
@@ -35,9 +16,6 @@
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.SimpleTask"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.ITask"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.TaskList"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.Account"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.WhatsappNotifier"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.INotifier"/>
@@ -60,4 +38,26 @@
 <fullyQualifiedTypeName name="org.junit.Test"/>
 <fullyQualifiedTypeName name="org.mockito.Mockito"/>
 <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+<fullyQualifiedTypeName name="com.aurionpro.exception.InventoryException"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.InventoryService"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.InventoryServiceImp"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.OrderService"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.SingleOrderStrategy"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.BulkOrderStrategy"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.Product"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.OrderStrategy"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.Order"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.AddProductCommand"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.Command"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.aurionpro.exception.NegativeException"/>
+<fullyQualifiedTypeName name="com.aurionpro.exception.InsufficientStockException"/>
+<fullyQualifiedTypeName name="com.aurionpro.model.InventoryManageService"/>
+<fullyQualifiedTypeName name="com.aurionpro.exception.OrderException"/>
 </qualifiedTypeNameHistroy>

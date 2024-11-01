@@ -1,5 +1,0 @@
-package com.aurionpro.decorator.hat.model;
-
-public interface IHat {
-		public void getPrice(double price);
-}

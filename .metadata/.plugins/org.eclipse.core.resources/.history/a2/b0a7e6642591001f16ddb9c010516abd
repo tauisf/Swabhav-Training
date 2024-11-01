@@ -1,5 +1,0 @@
-package com.aurionpro.account.model;
-
-public interface IAccountFactory {
-
-}

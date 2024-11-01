@@ -4,11 +4,15 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="com.aurionpro.model"/>
+			<item value="com"/>
 			<item value="com.aurionpro.tdd"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="21-Inventory-management-app"/>
+			<item value="21-Inventory-Mnagement-app"/>
 			<item value="20-unittesting-app"/>
 		</list>
 		<list key="projectNameTemplate">

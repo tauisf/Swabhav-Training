@@ -1,8 +1,0 @@
-package com.aurionpro.isp.solution.model;
-
-import com.aurionpro.isp.violation.model.IWorker;
-
-public interface IHuman extends IWorker {
-		public void eat();
-		public void drink();
-}
