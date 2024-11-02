@@ -1,16 +1,15 @@
 package com.aurionpro.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.*;
+
+import java.util.*;
+
 import java.util.stream.Collectors;
 
 import com.aurionpro.exception.InsufficientStockException;
 import com.aurionpro.exception.InventoryException;
 import com.aurionpro.exception.NegativeException;
+import com.aurionpro.exception.ProductExistException;
 
 public class InventoryServiceImp implements InventoryService, IStocksSubject {
 	Scanner scanner = new Scanner(System.in);
@@ -18,34 +17,33 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 	private static InventoryServiceImp inventoryServiceImp;
 	private static Map<Integer, Product> inventory = new HashMap<>();
 	private StockManager stockManager = new StockManager();
+	private static final String FILENAME = "products.dat";
 
-	private  InventoryServiceImp() {
-		Product product;
-		product = PorductFactory.createProduct(010, "Laptop", 100000, 10);
-		inventory.put(product.getId(), product);
-		product = PorductFactory.createProduct(011, "Washing-Machine", 23000, 10);
-		inventory.put(product.getId(), product);
-		product = PorductFactory.createProduct(012, "Phone", 34000, 10);
-		inventory.put(product.getId(), product);
-        
-		
-		registerObserver(new StockAlertSystem(5));
-		registerObserver(new StockLogger());
-		
+	private InventoryServiceImp() {
+		initializeInventory();
+
 	}
-	
-	public  static InventoryServiceImp createInventory() {
-		if(inventoryServiceImp == null) 
-			  inventoryServiceImp = new InventoryServiceImp();
+
+	public static InventoryServiceImp createInventory() {
+		if (inventoryServiceImp == null)
+			inventoryServiceImp = new InventoryServiceImp();
 		return inventoryServiceImp;
 	}
 
+	private void initializeInventory() {
+		addProduct(PorductFactory.createProduct(10, "Laptop", 100000, 10));
+		addProduct(PorductFactory.createProduct(11, "Washing Machine", 23000, 10));
+		addProduct(PorductFactory.createProduct(12, "Phone", 34000, 10));
+		registerObserver(new StockAlertSystem(5));
+		registerObserver(new StockLogger());
+	}
+
 	public void addProduct(Product product) throws InventoryException {
-		if (inventory.containsKey(product.getId())) {
-			throw new InventoryException();
+		if (inventory.values().stream().anyMatch(p -> p.getId() == product.getId())) {
+			throw new ProductExistException(product.getId());
 		}
 		inventory.put(product.getId(), product);
-
+		saveProductsToFile();
 	}
 
 	@Override
@@ -54,26 +52,9 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 		Product removedProduct = inventory.remove(id);
 		if (removedProduct != null) {
 			System.out.println("Product with ID " + id + " has been removed from inventory.");
+			saveProductsToFile();
 		} else {
 			System.out.println("Product not found with ID: " + id);
-		}
-		
-	}
-
-	public void viewProducts() {
-		System.out.println("Current Products:");
-		if (inventory.isEmpty()) {
-			System.out.println("No products in inventory.");
-			return;
-		}
-
-		Set<Entry<Integer, Product>> productSet = inventory.entrySet();
-		for (Entry<Integer, Product> entry : productSet) {
-			Integer productId = entry.getKey();
-			Product product = entry.getValue();
-
-			System.out.println("Product ID: " + productId + " -- " + product.getName() + " -- " + product.getQuantity()
-					+ " --" + product.getPrice());
 		}
 
 	}
@@ -101,35 +82,69 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 			}
 
 			product.setQuantity(product.getQuantity() + quantity);
-			System.out.println(quantity + " units added to product " + productId + ". New quantity: " + product.getQuantity());
+			System.out.println(
+					quantity + " units added to product " + productId + ". New quantity: " + product.getQuantity());
 
-		}else {
+		} else {
 
-		
 			if (product.getQuantity() < quantity) {
 				throw new InsufficientStockException();
-	
-			}
-		   product.setQuantity(product.getQuantity() - quantity);
 
-		System.out.println(quantity + " units removed from product " + productId + ". New quantity: " + product.getQuantity());
-		
+			}
+			product.setQuantity(product.getQuantity() - quantity);
+
+			System.out.println(
+					quantity + " units removed from product " + productId + ". New quantity: " + product.getQuantity());
+
 		}
-		
+		saveProductsToFile();
 		stockManager.notifyObservers(productId, product.getQuantity());
 	}
 
 	@Override
 	public List<Product> getLowStockProducts(int threshold) {
+
 		return inventory.values().stream().filter(product -> product.getQuantity() < threshold)
 				.collect(Collectors.toList());
+	}
+	
+	
+	@Override
+	public void saveProductsToFile() {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
+			oos.writeObject(new ArrayList<>(inventory.values()));
+			System.out.println("Product are save to the file");
+
+		} catch (IOException e) {
+			System.err.println("Error saving products: " + e.getMessage());
+		}
+
+	}
+	@Override
+	public void loadProductsFromFile() {
+		File file = new File(FILENAME);
+		if (!file.exists())
+			return;
+
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+			
+			List<Product> products = (List<Product>) ois.readObject();
+			System.out.println("----- porduct in inventroy ------");
+			for (Product product : products) {
+				// inventory.put(product.getId(), product);
+				System.out.println(product.getId() + " " + product.getName() + " " + product.getQuantity());
+			}
+			System.out.println("----------------------");
+		} catch (IOException | ClassNotFoundException e) {
+			System.err.println("Error loading products: " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void registerObserver(IStockObserver observer) {
 
 		stockManager.registerObserver(observer);
-		
+
 	}
 
 	@Override
