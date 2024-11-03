@@ -10,18 +10,33 @@ import com.aurionpro.exception.InsufficientStockException;
 import com.aurionpro.exception.InventoryException;
 import com.aurionpro.exception.NegativeException;
 import com.aurionpro.exception.ProductExistException;
+import com.aurionpro.exception.StockTranscationException;
+import com.aurionpro.exception.SuppilerNotFoundException;
 
 public class InventoryServiceImp implements InventoryService, IStocksSubject {
 	Scanner scanner = new Scanner(System.in);
 
 	private static InventoryServiceImp inventoryServiceImp;
-	private static Map<Integer, Product> inventory = new HashMap<>();
+
 	private StockManager stockManager = new StockManager();
+	private DataSaver saveData = new DataSaver();
+	private static DataLoader loadData = new DataLoader();
+	private static Transaction transaction;
+
 	private static final String FILENAME = "products.dat";
+	private static Map<Integer, Product> inventory = new HashMap<>();
+	private static final String SUPPLIER_FILENAME = "supplier.dat";
+	private Map<Integer, Suppiler> suppliers = new HashMap<>();
+	private static final String TRANSACTION_FILENAME = "transaction.dat";
+	private Map<Integer, Transaction> transactions = new HashMap<>();
 
 	private InventoryServiceImp() {
 		initializeInventory();
 
+	}
+
+	public Map<Integer, Product> getInventory() {
+		return new HashMap<>(inventory);
 	}
 
 	public static InventoryServiceImp createInventory() {
@@ -38,12 +53,17 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 		registerObserver(new StockLogger());
 	}
 
+	@Override
 	public void addProduct(Product product) throws InventoryException {
 		if (inventory.values().stream().anyMatch(p -> p.getId() == product.getId())) {
 			throw new ProductExistException(product.getId());
 		}
 		inventory.put(product.getId(), product);
-		saveProductsToFile();
+		try {
+			saveData.saveProducts(inventory, FILENAME);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -52,13 +72,54 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 		Product removedProduct = inventory.remove(id);
 		if (removedProduct != null) {
 			System.out.println("Product with ID " + id + " has been removed from inventory.");
-			saveProductsToFile();
+			try {
+				saveData.saveProducts(inventory, FILENAME);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			System.out.println("Product not found with ID: " + id);
 		}
 
 	}
 
+	// update product
+	@Override
+	public void updateProduct(int productId) throws InventoryException {
+		Product product = getProductById(productId);
+
+		System.out.println("Updating product: " + product.getName());
+
+		System.out.print("Enter new name (leave blank to keep current): ");
+		String newName = scanner.nextLine().trim();
+		if (!newName.isEmpty()) {
+			product.setName(newName);
+		}
+
+		System.out.print("Enter new price (enter -1 to keep current): ");
+		double newPrice = scanner.nextDouble();
+		if (newPrice >= 0) {
+			product.setPrice(newPrice);
+		}
+
+		System.out.print("Enter new quantity (enter -1 to keep current): ");
+		int newQuantity = scanner.nextInt();
+		if (newQuantity >= 0) {
+			product.setQuantity(newQuantity);
+		}
+
+		System.out.println("Product updated successfully: " + product);
+
+		try {
+			saveData.saveProducts(inventory, FILENAME);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// get Product by id
 	@Override
 	public Product getProductById(int id) throws InventoryException {
 		String idString = Integer.toString(id);
@@ -66,77 +127,58 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 				.orElseThrow(() -> new InventoryException());
 	}
 
+	// Update Stock
 	@Override
-	public void updateStock(int productId) throws InventoryException {
+	public synchronized void updateStock(int productId, int quantity) throws StockTranscationException {
 		Product product = getProductById(productId);
-		System.out.println("Enter The Quantity ");
-		int quantity = scanner.nextInt();
 
-		System.out.println("1.To Add Quantity 2. To Remove Quantity");
-		int choice = scanner.nextInt();
-
-		if (choice == 1) {
-
-			if (quantity <= 0) {
-				throw new NegativeException();
-			}
-
+		if (quantity > 0) {
 			product.setQuantity(product.getQuantity() + quantity);
+			transaction = new Transaction(product.getId(), "Added", quantity);
+			transactions.put(transaction.getTransactionId(), transaction);
+			
 			System.out.println(
 					quantity + " units added to product " + productId + ". New quantity: " + product.getQuantity());
 
 		} else {
-
-			if (product.getQuantity() < quantity) {
+			int absQuantity = Math.abs(quantity);
+			if (product.getQuantity() < absQuantity) {
 				throw new InsufficientStockException();
 
 			}
-			product.setQuantity(product.getQuantity() - quantity);
-
-			System.out.println(
-					quantity + " units removed from product " + productId + ". New quantity: " + product.getQuantity());
+			product.setQuantity(product.getQuantity() - absQuantity);
+			transaction = new Transaction(product.getId(), "Removed", absQuantity);
+			transactions.put(transaction.getTransactionId(), transaction);
+			System.out.println(absQuantity + " units removed from product " + productId + ". New quantity: "
+					+ product.getQuantity());
 
 		}
-		saveProductsToFile();
+		try {
+			saveData.saveTransaction(transactions, TRANSACTION_FILENAME);
+			saveData.saveProducts(inventory, FILENAME);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 		stockManager.notifyObservers(productId, product.getQuantity());
 	}
 
 	@Override
-	public List<Product> getLowStockProducts(int threshold) {
-
-		return inventory.values().stream().filter(product -> product.getQuantity() < threshold)
-				.collect(Collectors.toList());
-	}
-	
-	
-	@Override
 	public void saveProductsToFile() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
-			oos.writeObject(new ArrayList<>(inventory.values()));
-			System.out.println("Product are save to the file");
-
+		try {
+			saveData.saveProducts(inventory, FILENAME);
 		} catch (IOException e) {
-			System.err.println("Error saving products: " + e.getMessage());
+			e.printStackTrace();
 		}
-
 	}
+
 	@Override
 	public void loadProductsFromFile() {
-		File file = new File(FILENAME);
-		if (!file.exists())
-			return;
+		try {
+			loadData.loadProducts(FILENAME);
+		} catch (ClassNotFoundException | IOException e) {
 
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-			
-			List<Product> products = (List<Product>) ois.readObject();
-			System.out.println("----- porduct in inventroy ------");
-			for (Product product : products) {
-				// inventory.put(product.getId(), product);
-				System.out.println(product.getId() + " " + product.getName() + " " + product.getQuantity());
-			}
-			System.out.println("----------------------");
-		} catch (IOException | ClassNotFoundException e) {
-			System.err.println("Error loading products: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -158,4 +200,82 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 		stockManager.notifyObservers(productId, newQuantity);
 	}
 
+	// Add a Supplier
+	public void addSupplier(Suppiler supplier) {
+		suppliers.put(supplier.getSupplierId(), supplier);
+		try {
+			saveData.saveSuppliers(suppliers, SUPPLIER_FILENAME);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Delete or remove a Supplier
+	public void removeSupplier(int id) {
+
+		Suppiler removeSupplier = suppliers.remove(id);
+		if (removeSupplier != null) {
+			System.out.println("Supplier with ID " + id + " has been removed from inventory.");
+			try {
+				saveData.saveSuppliers(suppliers, SUPPLIER_FILENAME);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Supplier not found with ID: " + id);
+		}
+
+	}
+
+	// Update a Supplier
+	public void updateSupplier(int supplierId, String newName, String newContactInfo) {
+		Suppiler supplier = suppliers.get(supplierId);
+		if (supplier != null) {
+			supplier.setName(newName);
+			supplier.setContactInfo(newContactInfo);
+			try {
+				saveData.saveSuppliers(suppliers, SUPPLIER_FILENAME);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new SuppilerNotFoundException();
+		}
+	}
+
+	// View A Supplier
+	public Suppiler getSupplierById(int supplierId) {
+		return suppliers.get(supplierId);
+
+	}
+
+	// View all suppliers
+	public void getAllSuppliers() {
+		if (suppliers.isEmpty()) {
+			System.out.println("-----------No Supplier is Performed: ");
+			return;
+		}
+		try {
+			loadData.loadSuppliers(SUPPLIER_FILENAME);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void viewTransaction() {
+		if (transactions.isEmpty()) {
+			System.out.println("No transaction is done: ");
+			return;
+		}
+		try {
+			loadData.loadTransaction(TRANSACTION_FILENAME);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

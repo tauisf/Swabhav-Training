@@ -2,6 +2,7 @@ package com.aurionpro.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.aurionpro.exception.InsufficientStockException;
@@ -9,49 +10,39 @@ import com.aurionpro.exception.InventoryException;
 import com.aurionpro.exception.NegativeException;
 import com.aurionpro.exception.OrderException;
 import com.aurionpro.exception.ProductExistException;
+import com.aurionpro.exception.SuppilerNotFoundException;
 
 public class InventoryManageService {
 	private static Scanner scanner = new Scanner(System.in);
 	public static List<Order> orders = new ArrayList<>();
 	private static InventoryServiceImp inventory = InventoryServiceImp.createInventory();
 	private static OrderService orderService = new OrderService();
+	private static ReportService report = new ReportService();
+	private static StockTransaction stockTransaction;
 
 	public static void ManageInventory() {
 
 		boolean exit = false;
 
 		while (!exit) {
-			displayMenu();
-			int choice = getUserChoice(scanner);
+			mainDisplayMenu();
+			int choice = scanner.nextInt();
 
 			switch (choice) {
 			case 1:
-				addItem(scanner, inventory);
+				productManagementMenu();
 				break;
 			case 2:
-				removeItem(scanner, inventory);
+				supplierManagementMenu();
 				break;
 			case 3:
-				inventory.loadProductsFromFile();
+				transactionManagementMenu();
 				break;
 			case 4:
-				try {
-					placeOrder(scanner, orderService, inventory);
-				} catch (OrderException e) {
-					System.out.println(e.getMessage());
+				generateReports();
+				break;
 
-				}
-				break;
 			case 5:
-				updateStocks(scanner, inventory);
-				break;
-			case 6:
-				viewOrder(scanner, orders);
-				break;
-			case 7:
-				LowStockProducts(inventory);
-				break;
-			case 8:
 				System.out.println("Exiting...");
 				exit = true;
 				break;
@@ -62,23 +53,209 @@ public class InventoryManageService {
 		}
 	}
 
-	private static void displayMenu() {
-		System.out.println("1. Add Item");
-		System.out.println("2. Remove Item");
-		System.out.println("3. View Inventory");
-		System.out.println("4. Place Order");
-		System.out.println("5. Upadate the Stocks");
-		System.out.println("6. View Orders");
-		System.out.println("7. View Low Stocks");
-		System.out.println("8. Exit");
-		System.out.print("Choose an option: ");
+	private static void mainDisplayMenu() {
+		System.out.println("Menu:");
+		System.out.println("1. Product Management");
+		System.out.println("2. Supplier Management");
+		System.out.println("3. Transaction Management");
+		System.out.println("4. Generate Reports");
+		System.out.println("5. Exit");
+		System.out.print("Enter your choice: ");
+
 	}
 
-	private static int getUserChoice(Scanner scanner) {
-		return scanner.nextInt();
+	private static void productManagementMenu() {
+		boolean productOperation = true;
+
+		while (productOperation) {
+			int choice;
+			System.out.println("Product Management:");
+			System.out.println("1. Add Product");
+			System.out.println("2. Remove Product ");
+			System.out.println("3. View All Products");
+			System.out.println("4. Update Product");
+			System.out.println("5. Back to Main Menu");
+			System.out.print("Enter your choice: ");
+			choice = scanner.nextInt();
+			scanner.nextLine();
+
+			switch (choice) {
+			case 1:
+				addItem(inventory);
+				break;
+			case 2:
+				removeItem(inventory);
+				break;
+			case 3:
+				inventory.loadProductsFromFile();
+				break;
+
+			case 4:
+				updateProduct(inventory);
+				;
+				break;
+			case 5:
+				productOperation = false;
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
 	}
 
-	private static void addItem(Scanner scanner, InventoryService inventory) {
+	private static void updateProduct(InventoryService inventory) {
+
+		System.out.print("Enter the product id to update: ");
+		int productId = scanner.nextInt();
+		inventory.updateProduct(productId);
+	}
+
+	private static void supplierManagementMenu() {
+		int choice;
+		do {
+			System.out.println("Supplier Management:");
+			System.out.println("1. Add Supplier");
+			System.out.println("2. Update Supplier");
+			System.out.println("3. Delete Supplier");
+			System.out.println("4. View Supplier Details");
+			System.out.println("5. View All Suppliers");
+			System.out.println("6. Back to Main Menu");
+			System.out.print("Enter your choice: ");
+			choice = scanner.nextInt();
+			scanner.nextLine();
+			switch (choice) {
+			case 1:
+				addSupplier();
+				break;
+			case 2:
+				updateSupplier();
+				break;
+			case 3:
+				deleteSupplier();
+				break;
+			case 4:
+				viewSupplierDetails(scanner, inventory);
+				break;
+			case 5:
+				inventory.getAllSuppliers();
+				break;
+			case 6:
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		} while (choice != 6);
+	}
+
+	// Order
+	private static void transactionManagementMenu() {
+		int choice;
+		do {
+			System.out.println("Transaction Management:");
+			System.out.println("1. Update Stock");
+			System.out.println("2. View Transaction History");
+			System.out.println("3. Place Order");
+			System.out.println("4. View Order ");
+			System.out.println("5. Back to Main Menu");
+			System.out.print("Enter your choice: ");
+			choice = scanner.nextInt();
+			scanner.nextLine();
+
+			switch (choice) {
+			case 1:
+				try {
+					updateStocks(inventory);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				break;
+
+			case 2:
+				viewTransaction(inventory);
+				break;
+			case 3:
+				try {
+					placeOrder(scanner, orderService, inventory);
+				} catch (OrderException e) {
+					System.out.println(e.getMessage());
+
+				}
+				break;
+			case 4:
+				viewOrder(orders);
+				break;
+
+			case 5:
+				
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		} while (choice != 5);
+	}
+
+	private static void viewSupplierDetails(Scanner scanner, InventoryServiceImp inventory) {
+
+		System.out.print("Enter Supplier ID to view : ");
+
+		int supplierId = scanner.nextInt();
+		if (inventory.getSupplierById(supplierId) == null) {
+			System.out.println("Suppiler do not exist");
+			return;
+		}
+		System.out.println(inventory.getSupplierById(supplierId));
+
+	}
+
+	private static void deleteSupplier() {
+		System.out.print("Enter Supplier ID to delete  : ");
+
+		int supplierId = scanner.nextInt();
+		inventory.removeSupplier(supplierId);
+	}
+
+	private static void updateSupplier() {
+		System.out.print("Enter the Supplier ID to update: ");
+		int supplierId = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.print("Enter new name (leave blank to keep current): ");
+		String newName = scanner.nextLine().trim();
+
+		System.out.print("Enter new contact information (leave blank to keep current): ");
+		String newContactInfo = scanner.nextLine().trim();
+
+		try {
+			inventory.updateSupplier(supplierId, newName.isEmpty() ? null : newName,
+					newContactInfo.isEmpty() ? null : newContactInfo);
+			System.out.println("Supplier updated successfully.");
+		} catch (SuppilerNotFoundException e) {
+			System.err.println("Error updating supplier: " + e.getMessage());
+		}
+
+	}
+
+	private static void addSupplier() {
+		System.out.print("Enter Supplier ID: ");
+		int supplierId = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.print("Enter Supplier Name: ");
+		String name = scanner.nextLine().trim();
+
+		System.out.print("Enter Supplier Contact Information: ");
+		String contactInfo = scanner.nextLine().trim();
+
+		inventory.addSupplier(new Suppiler(supplierId, name, contactInfo));
+
+	}
+
+	private static void generateReports() {
+
+		report.displayReport(inventory, 5);
+	}
+
+	private static void addItem(InventoryService inventory) {
 		try {
 			System.out.print("Enter Item ID: ");
 			int id = scanner.nextInt();
@@ -98,7 +275,7 @@ public class InventoryManageService {
 
 	}
 
-	private static void removeItem(Scanner scanner, InventoryService inventory) {
+	private static void removeItem(InventoryService inventory) {
 
 		System.out.print("Enter Item ID to remove: ");
 
@@ -121,7 +298,7 @@ public class InventoryManageService {
 
 			switch (addChoice) {
 			case 1:
-				addProductToOrder(scanner, orderService, inventory);
+				addProductToOrder(orderService, inventory);
 				break;
 			case 2:
 				Order placedOrder = orderService.placeOrder(customerId, orderService.getProducts());
@@ -141,7 +318,7 @@ public class InventoryManageService {
 		}
 	}
 
-	private static void addProductToOrder(Scanner scanner, OrderService orderService, InventoryService inventory) {
+	private static void addProductToOrder(OrderService orderService, InventoryService inventory) {
 
 		try {
 			System.out.print("Enter Product ID to order: ");
@@ -161,22 +338,7 @@ public class InventoryManageService {
 		}
 	}
 
-	private static void updateStocks(Scanner scanner, InventoryService inventory) {
-		System.out.println("Enter the product id ");
-		int productId = scanner.nextInt();
-		try {
-			inventory.updateStock(productId);
-		} catch (NegativeException e) {
-			System.out.println(e.getMessage());
-		} catch (InsufficientStockException e) {
-			System.out.println(e.getMessage());
-		} catch (InventoryException e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	private static void viewOrder(Scanner scanner, List<Order> orders) {
+	private static void viewOrder(List<Order> orders) {
 		if (orders.isEmpty()) {
 			System.out.println("No Order Place! ");
 			return;
@@ -210,16 +372,38 @@ public class InventoryManageService {
 
 	}
 
-	private static void LowStockProducts(InventoryServiceImp inventory) {
-		List<Product> lowStockProducts = inventory.getLowStockProducts(5);
-		if (lowStockProducts.isEmpty()) {
-			System.out.println("No Product are low on stock");
+	private static void updateStocks(InventoryService inventory) throws InterruptedException {
+
+		System.out.println("Enter the product id ");
+		int productId = scanner.nextInt();
+		System.out.println("Enter the product id ");
+		int quantity = scanner.nextInt();
+		if (quantity < 0) {
+			System.out.println("Quantity cannot be negative");
 			return;
 		}
 
-		for (Product product : lowStockProducts) {
-			System.out.println(product.getId() + " " + product.getName() + " " + product.getQuantity());
+		System.out.println("1.Add Stocks 2.Remove Stocks");
+		int chocie = scanner.nextInt();
+		try {
+			if (chocie == 1) {
+				stockTransaction = new StockTransaction(inventory, productId, quantity, true);
+				stockTransaction.getThread().join();
+			} else {
+				stockTransaction = new StockTransaction(inventory, productId, quantity, false);
+				stockTransaction.getThread().join();
+			}
+		} catch (NegativeException e) {
+			System.out.println(e.getMessage());
+		} catch (InsufficientStockException e) {
+			System.out.println(e.getMessage());
 		}
+
+	}
+
+	private static void viewTransaction(InventoryServiceImp inventory) {
+		inventory.viewTransaction();
+
 	}
 
 }

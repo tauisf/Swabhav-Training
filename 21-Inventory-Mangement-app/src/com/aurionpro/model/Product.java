@@ -10,9 +10,7 @@ public class Product implements Serializable {
 	    private int quantity;
 
 	    public Product(int id, String name, double price, int quantity) {
-	        if (quantity < 0) {
-	            throw new IllegalArgumentException("Quantity cannot be negative.");
-	        }
+	       
 	        this.id = id;
 	        this.name = name;
 	        this.price = price;
@@ -48,9 +46,7 @@ public class Product implements Serializable {
 		}
 
 		public void setQuantity(int quantity) {
-	        if (quantity < 0) {
-	            throw new IllegalArgumentException("Quantity cannot be negative.");
-	        }
+	        
 	        this.quantity = quantity;
 	    }
 	}
