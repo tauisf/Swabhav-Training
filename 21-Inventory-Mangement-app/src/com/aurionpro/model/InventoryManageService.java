@@ -15,11 +15,13 @@ import com.aurionpro.exception.SuppilerNotFoundException;
 
 public class InventoryManageService {
 	private static Scanner scanner = new Scanner(System.in);
-	public static List<Order> orders = new ArrayList<>();
+	
+	private static List<Suppiler> orderPlacedBySuppliers= new ArrayList<>(); 
 	private static InventoryServiceImp inventory = InventoryServiceImp.createInventory();
-	private static OrderService orderService = new OrderService();
+	private static OrderService orderService = new OrderService() ;
 	private static ReportService report = new ReportService();
 	private static StockTransaction stockTransaction;
+	
 
 	public static void ManageInventory() {
 
@@ -205,7 +207,7 @@ public class InventoryManageService {
 				}
 				break;
 			case 4:
-				viewOrder(orders);
+				viewOrder();
 				break;
 
 			case 5:
@@ -218,17 +220,18 @@ public class InventoryManageService {
 	}
 
 	private static void viewSupplierDetails(Scanner scanner, InventoryServiceImp inventory) {
-
+		try {
 		inventory.viewSupplierbyId();
 		System.out.print("Enter Supplier ID to view : ");
-
 		int supplierId = scanner.nextInt();
 		if (inventory.getSupplierById(supplierId) == null) {
 			System.out.println("Suppiler do not exist");
 			return;
 		}
 		System.out.println(inventory.getSupplierById(supplierId));
-
+		}catch(SuppilerNotFoundException e) {
+			System.out.println(e.getMessage()+"Suppiler do not exist");
+		}
 	}
 
 	private static void deleteSupplier() {
@@ -311,9 +314,12 @@ public class InventoryManageService {
 	private static void placeOrder(Scanner scanner, OrderService orderService, InventoryService inventory)
 			throws OrderException {
 
-		System.out.print("Enter Customer ID to order: ");
-		String customerId = scanner.next();
-
+		try {
+		inventory.viewSupplierbyId();
+		System.out.print("Enter supplier ID to order: ");
+		int supplierId = scanner.nextInt();
+		 Suppiler selectedSupplier = inventory.getSupplierById(supplierId);
+		
 		boolean ordering = true;
 		while (ordering) {
 			System.out.print("1. Add Product to Order\n2. Place the Order\nChoose an option: ");
@@ -325,20 +331,29 @@ public class InventoryManageService {
 				addProductToOrder(orderService, inventory);
 				break;
 			case 2:
-				Order placedOrder = orderService.placeOrder(customerId, orderService.getProducts());
-
+				
+				Order placedOrder = orderService.placeOrder(supplierId);
+				
 				if (placedOrder == null) {
 					System.out.println("------Nothing is added to order");
 					break;
 				}
 				System.out.println("------Order placed succefully");
 				inventory.saveProductsToFile();
-				orders.add(placedOrder);
+
+				selectedSupplier.addOrder(placedOrder);
+				 if (!orderPlacedBySuppliers.contains(selectedSupplier)) {
+                     orderPlacedBySuppliers.add(selectedSupplier);
+                 }
+				 orderService.clearOrderList();
 				ordering = false;
 				break;
 			default:
 				System.out.println("Invalid choice. Please try again.");
 			}
+		}
+		}catch(SuppilerNotFoundException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -353,8 +368,8 @@ public class InventoryManageService {
 			Product orderItem = inventory.getProductById(orderId);
 			orderService.addProductToOrder(orderItem, quantity);
 
-		} catch (InventoryException e) {
-			System.out.println(e.getMessage());
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage()+"Product Not Exist");
 		} catch (NegativeException e) {
 			System.out.println(e.getMessage());
 		} catch (InsufficientStockException e) {
@@ -362,37 +377,55 @@ public class InventoryManageService {
 		}
 	}
 
-	private static void viewOrder(List<Order> orders) {
-		if (orders.isEmpty()) {
-			System.out.println("No Order Place! ");
+	private static void viewOrder() {
+		if(orderPlacedBySuppliers.isEmpty()) {
+			System.out.println("----No Supplier placed the Order ");
 			return;
 		}
-		System.out.println("Select an order to view :");
-		for (Order order : orders) {
-			System.out.println("Order ID: " + order.getOrderId());
+		
+		orderPlacedBySuppliers.stream()
+		          .forEach(supplier ->System.out.println("SupplierId: "+supplier.getSupplierId()
+		                    		   					  +"Supplier name:  "+supplier.getName()));
+		System.out.print("Enter Supplier ID to view : ");
+		int supplierId = scanner.nextInt();
+		
+		Suppiler supplier = inventory.getSupplierById(supplierId);
+		if (supplier == null) {
+			System.out.println("Suppiler do not exist");
+			return;
 		}
+		List<Order> orders = supplier.getOrders();
+	    if (orders.isEmpty()) {
+	        System.out.println("No orders found for this supplier.");
+	        return;
+	    }
+		 
+		
+		
+		 System.out.println("Select an order to view:");
+		    supplier.getOrders().forEach(order -> 
+		        System.out.println("Order ID: " + order.getOrderId())
+		       
+		    );
+		    
+		   
 		System.out.println("Enter Order ID to view :");
 		int selectedOrderId = scanner.nextInt();
 
-		Order selectedOrder = null;
-		for (Order order : orders) {
-			if (order.getOrderId() == selectedOrderId) {
-				selectedOrder = order;
-				break;
-			}
-		}
+		 Order selectedOrder = supplier.getOrders().stream()
+			        .filter(order -> order.getOrderId() == selectedOrderId)
+			        .findFirst()
+			        .orElse(null);
 
 		if (selectedOrder == null) {
 			System.out.println("Invalid Order ID.");
 			return;
 		}
 
-		for (Order order : orders) {
-			for (Product product : order.getProducts()) {
-				System.out.println(product.getId() + "--- " + product.getName() + "--- " + product.getQuantity()
-						+ "--- " + product.getPrice());
-			}
-		}
+		 for (Product product : selectedOrder.getProducts()) {
+		        System.out.println(product.getId() + "--- " + product.getName() + "--- " + product.getQuantity()
+		                + "--- " + product.getPrice());
+		    }
 
 	}
 

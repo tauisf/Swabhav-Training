@@ -126,7 +126,7 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 		String idString = Integer.toString(id);
 		
 		return inventory.values().stream().filter(product -> product.getId() == id).findFirst()
-				.orElseThrow(() -> new NotFoundException() );
+				.orElseThrow(() -> new NotFoundException());
 	}
 	
 	public void viewProductId() {
@@ -257,8 +257,8 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
   
 	public void viewSupplierbyId() {
 		if(suppliers.isEmpty()) {
-			System.out.println("No Supplie to view");
-			return;
+			
+			throw  new SuppilerNotFoundException();
 		}
 		for(Map.Entry<Integer, Suppiler> supplier : suppliers.entrySet())
 			System.out.println("Supplier-id: "+supplier.getKey());
@@ -267,14 +267,16 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 	// View A Supplier
 	public Suppiler getSupplierById(int supplierId) {
 		
-		return suppliers.get(supplierId);
+		return suppliers.values().stream().filter(supplier -> supplier.getSupplierId() == supplierId).findFirst()
+				.orElseThrow(() -> new SuppilerNotFoundException());
+		
 
 	}
 
 	// View all suppliers
 	public void getAllSuppliers() {
 		if (suppliers.isEmpty()) {
-			System.out.println("-----------No Supplier is Performed: ");
+			System.out.println("-----------No Supplier is added: ");
 			return;
 		}
 		try {

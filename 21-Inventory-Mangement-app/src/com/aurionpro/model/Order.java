@@ -5,13 +5,19 @@ import java.util.List;
 import java.util.Random;
 
 public class Order {
+	
 	Random random = new Random();
+	
 	 private int orderId;
-	    private String customerId;
-	    private List<Product> products;
-	    public Order(String customerId,List<Product> products) {
+	 private  int supplierId ;
+	 private List<Product> products;
+	 
+	 
+	    
+	    
+	    public Order(int supplierId,List<Product> products) {
 	        this.orderId = random.nextInt(100)+1;
-	        this.customerId = customerId;
+	        this.supplierId = supplierId;
 	        this.products = products ;
 	    }
 
@@ -19,12 +25,18 @@ public class Order {
 	        return orderId;
 	    }
 
-	    public String getCustomerId() {
-	        return customerId;
+	    public int getCustomerId() {
+	        return supplierId;
 	    }
 
 		public List<Product> getProducts() {
 			return products;
+		}
+
+		@Override
+		public String toString() {
+			return "Order [random=" + random + ", orderId=" + orderId + ", supplierId=" + supplierId + ", products="
+					+ products + "]";
 		}
 
 	  

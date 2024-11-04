@@ -9,6 +9,7 @@ import com.aurionpro.exception.OrderException;
 
 public class OrderService {
 	private List<Product> Orderproducts;
+	
 
 	public OrderService() {
 		super();
@@ -31,15 +32,24 @@ public class OrderService {
 	}
 
 	public List<Product> getProducts() {
-		return Orderproducts;
+		 return new ArrayList<>(Orderproducts);
 	}
+	
+	public void clearOrderList() {
+		Orderproducts.clear();
+	}
+	
 
-	public Order placeOrder(String customerId, List<Product> products) throws OrderException {
-		if (products == null || products.isEmpty()) {
-			return null;
-		}
+	public Order placeOrder(int supplierId) throws OrderException {
+		 if (Orderproducts.isEmpty()) {
+	            return null; // No products to place an order
+	        }
 
-		return new Order(customerId, products);
+	        // Create a copy of the current products
+	        List<Product> productsForOrder = new ArrayList<>(Orderproducts);
+	        clearOrderList(); // Clear the list for the next order
+
+	        return new Order(supplierId, productsForOrder);
 
 	}
 

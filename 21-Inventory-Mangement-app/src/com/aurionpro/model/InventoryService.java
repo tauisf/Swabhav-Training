@@ -10,6 +10,7 @@ public interface InventoryService {
 	//Product 
 	public void addProduct(Product product) throws InventoryException ;
 	public Product getProductById(int id)throws InventoryException ;
+	public void viewProductId();
     public void updateProduct(int productId) throws InventoryException ;
     public void removeProduct(int id);
 	public Map<Integer, Product> getInventory();
@@ -19,6 +20,7 @@ public interface InventoryService {
 	public void removeSupplier(int id) ;
 	public void updateSupplier(int supplierId, String newName, String newContactInfo);
 	public Suppiler getSupplierById(int supplierId);
+	public void viewSupplierbyId();
 	 public void  getAllSuppliers() ;
 	
 	//transaction

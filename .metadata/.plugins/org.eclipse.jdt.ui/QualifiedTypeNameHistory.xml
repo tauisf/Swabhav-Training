@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.aurionpro.proxy.model.ProxyImage"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.SimpleTask"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.ITask"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.TaskList"/>
@@ -50,8 +49,6 @@
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
 <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="com.aurionpro.exception.SuppilerNotFoundException"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
+<fullyQualifiedTypeName name="com.aurionpro.exception.NotFoundException"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>
