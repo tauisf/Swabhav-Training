@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.aurionpro.exception.InsufficientStockException;
 import com.aurionpro.exception.InventoryException;
 import com.aurionpro.exception.NegativeException;
+import com.aurionpro.exception.NotFoundException;
 import com.aurionpro.exception.ProductExistException;
 import com.aurionpro.exception.StockTranscationException;
 import com.aurionpro.exception.SuppilerNotFoundException;
@@ -28,7 +29,7 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 	private static final String SUPPLIER_FILENAME = "supplier.dat";
 	private Map<Integer, Suppiler> suppliers = new HashMap<>();
 	private static final String TRANSACTION_FILENAME = "transaction.dat";
-	private Map<Integer, Transaction> transactions = new HashMap<>();
+	private static  Map<Integer, Transaction> transactions = new HashMap<>();
 
 	private InventoryServiceImp() {
 		initializeInventory();
@@ -121,10 +122,20 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 
 	// get Product by id
 	@Override
-	public Product getProductById(int id) throws InventoryException {
+	public Product getProductById(int id) {
 		String idString = Integer.toString(id);
+		
 		return inventory.values().stream().filter(product -> product.getId() == id).findFirst()
-				.orElseThrow(() -> new InventoryException());
+				.orElseThrow(() -> new NotFoundException() );
+	}
+	
+	public void viewProductId() {
+		if(inventory.isEmpty()) {
+			System.out.println("No Product to view");
+			return;
+		}
+		for(Map.Entry<Integer, Product> product : inventory.entrySet())
+			System.out.println("Product-id: "+product.getKey());
 	}
 
 	// Update Stock
@@ -243,9 +254,19 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 			throw new SuppilerNotFoundException();
 		}
 	}
-
+  
+	public void viewSupplierbyId() {
+		if(suppliers.isEmpty()) {
+			System.out.println("No Supplie to view");
+			return;
+		}
+		for(Map.Entry<Integer, Suppiler> supplier : suppliers.entrySet())
+			System.out.println("Supplier-id: "+supplier.getKey());
+	}
+	
 	// View A Supplier
 	public Suppiler getSupplierById(int supplierId) {
+		
 		return suppliers.get(supplierId);
 
 	}
@@ -267,7 +288,7 @@ public class InventoryServiceImp implements InventoryService, IStocksSubject {
 
 	public void viewTransaction() {
 		if (transactions.isEmpty()) {
-			System.out.println("No transaction is done: ");
+			System.out.println("----------No transaction is done: ");
 			return;
 		}
 		try {

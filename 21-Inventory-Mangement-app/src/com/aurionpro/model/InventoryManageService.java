@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.aurionpro.exception.InsufficientStockException;
 import com.aurionpro.exception.InventoryException;
 import com.aurionpro.exception.NegativeException;
+import com.aurionpro.exception.NotFoundException;
 import com.aurionpro.exception.OrderException;
 import com.aurionpro.exception.ProductExistException;
 import com.aurionpro.exception.SuppilerNotFoundException;
@@ -74,7 +75,8 @@ public class InventoryManageService {
 			System.out.println("2. Remove Product ");
 			System.out.println("3. View All Products");
 			System.out.println("4. Update Product");
-			System.out.println("5. Back to Main Menu");
+			System.out.println("5. View  Product ");
+			System.out.println("6. Back to Main Menu");
 			System.out.print("Enter your choice: ");
 			choice = scanner.nextInt();
 			scanner.nextLine();
@@ -92,15 +94,36 @@ public class InventoryManageService {
 
 			case 4:
 				updateProduct(inventory);
-				;
 				break;
 			case 5:
+				viewProductById(inventory);
+				break;
+				
+			case 6:
 				productOperation = false;
 				break;
 			default:
 				System.out.println("Invalid choice. Please try again.");
 			}
 		}
+	}
+
+	private static void viewProductById(InventoryServiceImp inventory2) {
+		try {
+		inventory.viewProductId();
+		
+		System.out.print("Enter Product ID to view : ");
+
+		int productId = scanner.nextInt();
+		if (inventory.getProductById(productId) == null) {
+			System.out.println("Product do not exist");
+			return;
+		}
+		System.out.println(inventory.getProductById(productId));
+		}catch(NotFoundException e) {
+			System.out.println(e.getMessage()+"  Product donot Exist ");
+		}
+		
 	}
 
 	private static void updateProduct(InventoryService inventory) {
@@ -196,6 +219,7 @@ public class InventoryManageService {
 
 	private static void viewSupplierDetails(Scanner scanner, InventoryServiceImp inventory) {
 
+		inventory.viewSupplierbyId();
 		System.out.print("Enter Supplier ID to view : ");
 
 		int supplierId = scanner.nextInt();
@@ -376,7 +400,7 @@ public class InventoryManageService {
 
 		System.out.println("Enter the product id ");
 		int productId = scanner.nextInt();
-		System.out.println("Enter the product id ");
+		System.out.println("Enter the Quantity ");
 		int quantity = scanner.nextInt();
 		if (quantity < 0) {
 			System.out.println("Quantity cannot be negative");

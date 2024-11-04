@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.aurionpro.proxy.model.IImage"/>
 <fullyQualifiedTypeName name="com.aurionpro.proxy.model.ProxyImage"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.SimpleTask"/>
 <fullyQualifiedTypeName name="com.aurionpro.composite.model.ITask"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.aurionpro.exception.InsufficientStockException"/>
 <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.util.Map.Entry"/>
 </qualifiedTypeNameHistroy>
