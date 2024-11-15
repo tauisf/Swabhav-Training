@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.aurionpro.composite.model.SimpleTask"/>
-<fullyQualifiedTypeName name="com.aurionpro.composite.model.ITask"/>
-<fullyQualifiedTypeName name="com.aurionpro.composite.model.TaskList"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.Account"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.WhatsappNotifier"/>
 <fullyQualifiedTypeName name="com.aurionpro.observer.model.INotifier"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="com.aurionpro.exception.NotFoundException"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.mysql.cj.jdbc.DatabaseMetaData"/>
+<fullyQualifiedTypeName name="java.sql.DatabaseMetaData"/>
+<fullyQualifiedTypeName name="java.sql.ResultSetMetaData"/>
 </qualifiedTypeNameHistroy>
