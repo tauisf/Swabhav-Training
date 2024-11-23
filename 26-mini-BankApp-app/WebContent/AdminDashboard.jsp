@@ -159,28 +159,55 @@
     </div>
     </c:if>
     
-    
-    <!-- Add Account Form -->
-    <c:if test="${not empty AddAccount}">
-        <div class="container">
-            <h3 class="mt-5">Add Bank Account</h3>
-            <form action="GenerateAccount" method="POST">
-                <div class="mb-3">
-                    <label for="customerId" class="form-label">Customer ID</label>
-                    <input type="text" class="form-control" id="customerId" name="customerId" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Generate Account</button>
+   <!-- Add Account Form -->
+<c:if test="${not empty AddAccount}">
+    <div class="container">
+        <h3 class="mt-5">Add Bank Account</h3>
+        <form action="GenerateAccount" method="GET">
+            <div class="mb-3">
+                <label for="customerId" class="form-label">Customer ID</label>
+                <input type="text" class="form-control" id="customerId" name="customerId" required>
+                <button type="submit" class="btn btn-primary" name="action" value="filter">Filter</button>
+                <button type="submit" class="btn btn-primary" name="action" value="generate">Generate Account</button>
                 <a class="btn btn-secondary" href="AdminDashboard.jsp">Cancel</a>
-            </form>
-            <c:if test="${not empty errorMessage}">
-            <p class="text-center text-danger">${errorMessage}</p>
+            </div>
+        </form>
+        <c:if test="${not empty customers}">
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>AccountNumber</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="customer" items="${customers}">
+                       <tr>
+                            <td>${customer.getCustomerId()}</td>
+                            <td>${customer.getFirstName()}</td>
+                            <td>${customer.getLastName()}</td>
+                            <td>${customer.getEmail()}</td>
+                             <td>${customer.getAccountNumber()}</td>
+
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </c:if>
-        <!-- Success Message -->
+        <c:if test="${empty customers}">
+            <p class="text-center text-danger mt-3">No customers found.</p>
+        </c:if>
+        <c:if test="${not empty errorMessage}">
+            <p class="text-center text-danger mt-3">${errorMessage}</p>
+        </c:if>
         <c:if test="${not empty successMessage}">
-            <div class="alert alert-success text-center">${successMessage}</div>
+            <div class="alert alert-success text-center mt-3">${successMessage}</div>
         </c:if>
-        </div>
-    </c:if>
+    </div>
+</c:if>
 
     
     <c:if test="${not empty AddCustomer }">
